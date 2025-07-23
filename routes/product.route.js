@@ -14,6 +14,9 @@ router.get('/', async (req, res) => {
   try {
     const { page = 1, limit = 10, material, isSold, sort = '-createdAt' } = req.query;
 
+    // Define the query object
+    const query = {};
+
     if (material) {
       query.material = material;
     }
@@ -22,11 +25,13 @@ router.get('/', async (req, res) => {
       query.isSold = isSold === 'true';
     }
 
-    const products = await Product.find({})
+    // Fetch products with the query, sort, limit, and skip
+    const products = await Product.find(query)
       .sort(sort)
       .limit(parseInt(limit))
       .skip((parseInt(page) - 1) * parseInt(limit));
 
+    // Count total documents matching the query
     const total = await Product.countDocuments(query);
 
     res.status(200).json({
