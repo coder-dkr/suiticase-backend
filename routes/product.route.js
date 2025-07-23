@@ -9,11 +9,10 @@ const router = express.Router();
 router.use(protect);
 router.use(authorize('buyer'));
 
-// @route   GET /api/v1/seller/products
+// @route   GET /api/v1/buyer/products
 router.get('/', async (req, res) => {
   try {
     const { page = 1, limit = 10, material, isSold, sort = '-createdAt' } = req.query;
-    const query = { seller: req.user._id };
 
     if (material) {
       query.material = material;
@@ -23,7 +22,7 @@ router.get('/', async (req, res) => {
       query.isSold = isSold === 'true';
     }
 
-    const products = await Product.find(query)
+    const products = await Product.find({})
       .sort(sort)
       .limit(parseInt(limit))
       .skip((parseInt(page) - 1) * parseInt(limit));
