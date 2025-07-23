@@ -113,7 +113,7 @@ router.get('/users/:id', async (req, res) => {
 });
 
 // @desc    Delete user by ID
-// @route   DELETE /api/admin/users/:id
+// @route   DELETE /api/v1/admin/users/:id
 // @access  Private/Admin
 router.delete('/users/:id', async (req, res) => {
   try {
@@ -184,9 +184,8 @@ router.delete('/users/:id', async (req, res) => {
   }
 });
 
-// @desc    Update user status (verify/unverify)
-// @route   PATCH /api/admin/users/:id/status
-// @access  Private/Admin
+
+// @route   PATCH /api/v1/admin/users/:id/status
 router.patch('/users/:id/status', async (req, res) => {
   try {
     const { id } = req.params;
@@ -233,9 +232,8 @@ router.patch('/users/:id/status', async (req, res) => {
   }
 });
 
-// @desc    Get admin dashboard statistics
+
 // @route   GET /api/admin/dashboard
-// @access  Private/Admin
 router.get('/dashboard', async (req, res) => {
   try {
     // Get user statistics
