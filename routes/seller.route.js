@@ -348,7 +348,7 @@ router.get('/dashboard', async (req, res) => {
 
     // Get products by material
     const productsByMaterial = await Product.aggregate([
-      { $match: { seller: mongoose.Types.ObjectId(sellerId) } },
+      { $match: { seller: new mongoose.Types.ObjectId(sellerId) } },
       { $group: { _id: '$material', count: { $sum: 1 } } },
       { $sort: { count: -1 } }
     ]);

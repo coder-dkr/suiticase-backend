@@ -10,9 +10,8 @@ const router = express.Router();
 // Apply authentication to all routes
 router.use(protect);
 
-// @desc    Place new order
 // @route   POST /api/orders
-// @access  Private/Buyer
+
 router.post('/', authorize('buyer'), validate(orderSchema), async (req, res) => {
   try {
     const { product: productId, quantity = 1, paymentMethod, shippingAddress, orderNotes } = req.body;
@@ -84,9 +83,8 @@ router.post('/', authorize('buyer'), validate(orderSchema), async (req, res) => 
   }
 });
 
-// @desc    Get buyer's orders
 // @route   GET /api/orders
-// @access  Private/Buyer
+
 router.get('/', authorize('buyer'), async (req, res) => {
   try {
     const { page = 1, limit = 10, status, sort = '-createdAt' } = req.query;
@@ -263,14 +261,14 @@ router.get('/dashboard/stats', authorize('buyer'), async (req, res) => {
 
     // Get total amount spent
     const totalSpentResult = await Order.aggregate([
-      { $match: { buyer: mongoose.Types.ObjectId(buyerId), status: { $ne: 'cancelled' } } },
+      { $match: { buyer: new mongoose.Types.ObjectId(buyerId), status: { $ne: 'cancelled' } } },
       { $group: { _id: null, totalSpent: { $sum: '$totalAmount' } } }
     ]);
     const totalSpent = totalSpentResult[0]?.totalSpent || 0;
 
     // Get orders by status
     const ordersByStatus = await Order.aggregate([
-      { $match: { buyer: mongoose.Types.ObjectId(buyerId) } },
+      { $match: { buyer: new mongoose.Types.ObjectId(buyerId) } },
       { $group: { _id: '$status', count: { $sum: 1 } } },
       { $sort: { count: -1 } }
     ]);

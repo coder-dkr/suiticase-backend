@@ -13,6 +13,7 @@ import authRoutes from './routes/auth.route.js';
 import sellerRoutes from './routes/seller.route.js';
 import orderRoutes from './routes/orders.route.js';
 import adminRoutes from './routes/admin.route.js';
+import productRoutes from './routes/product.route.js';
 
 
 import errorHandler from './middleware/errorHandler.middleware.js';
@@ -24,12 +25,12 @@ app.use(helmet());
 app.use(cors('*'));
 
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  message: 'Too many requests from this IP, please try again later'
-});
-app.use(limiter);
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   max: 100,
+//   message: 'Too many requests from this IP, please try again later'
+// });
+// app.use(limiter);
 
 
 app.use(express.json({ limit: '10mb' }));
@@ -43,6 +44,7 @@ app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/seller', sellerRoutes);
 app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/admin', adminRoutes);
+app.use('/api/v1/products', productRoutes);
 
 
 app.get('/api/v1/health', (req, res) => {
